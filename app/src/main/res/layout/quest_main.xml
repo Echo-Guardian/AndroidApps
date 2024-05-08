@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/medi"
+    tools:context=".MainActivity">
+
+    <View
+        android:id="@+id/containerLogin"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/container_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.603" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Questionário"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_goneMarginTop="30dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="@id/containerLogin"
+        app:layout_constraintStart_toStartOf="@id/containerLogin"
+        app:layout_constraintEnd_toEndOf="@id/containerLogin"/>
+
+
+    <TextView
+        android:id="@+id/txtDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Informe ao menos um (1) problema do seu dia a dia"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/containerLogin"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="@id/containerLogin"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="272dp"
+        android:text="Problema 1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="272dp"
+        android:text="Problema 2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/containerLogin" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="292dp"
+        android:layout_marginEnd="252dp"
+        android:text="Problema 3"
+        app:layout_constraintEnd_toEndOf="@+id/containerLogin"
+        app:layout_constraintTop_toTopOf="@+id/containerLogin" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="392dp"
+        android:layout_marginEnd="272dp"
+        android:text="Problema 4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/containerLogin" />
+
+    <EditText
+        android:id="@+id/editP1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/container_edit_login"
+        android:hint=""
+        android:inputType="text"
+        android:maxLines="3"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="@id/containerLogin"
+        app:layout_constraintStart_toStartOf="@id/containerLogin"
+        app:layout_constraintTop_toBottomOf="@id/txtDesc" />
+
+    <EditText
+        android:id="@+id/editP2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="156dp"
+        android:background="@drawable/container_edit_login"
+        android:hint=""
+        android:inputType="text"
+        android:maxLines="3"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="@id/containerLogin"
+        app:layout_constraintStart_toStartOf="@id/containerLogin"
+        app:layout_constraintTop_toBottomOf="@id/txtDesc" />
+
+    <EditText
+        android:id="@+id/editP3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="256dp"
+        android:background="@drawable/container_edit_login"
+        android:hint=""
+        android:inputType="text"
+        android:maxLines="3"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="@id/containerLogin"
+        app:layout_constraintStart_toStartOf="@id/containerLogin"
+        app:layout_constraintTop_toBottomOf="@id/txtDesc" />
+
+    <EditText
+        android:id="@+id/editP4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="360dp"
+        android:background="@drawable/container_edit_login"
+        android:hint=""
+        android:inputType="text"
+        android:maxLines="3"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="@id/containerLogin"
+        app:layout_constraintHorizontal_bias="0.325"
+        app:layout_constraintStart_toStartOf="@id/containerLogin"
+        app:layout_constraintTop_toBottomOf="@id/txtDesc" />
+
+    <Button
+        android:id="@+id/txtCadastro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/blue"
+        android:padding="15dp"
+        android:text="Enviar"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/containerLogin"
+        app:layout_constraintEnd_toEndOf="@id/containerLogin"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="@id/containerLogin" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
