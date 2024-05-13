@@ -39,7 +39,7 @@ public class Alerta_main extends AppCompatActivity {
 
     private void showConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Tem certeza que deseja ativar o alarme de emergência?")
+        builder.setMessage("Temm certeza que deseja ativar o alarme de emergência?")
                 .setCancelable(false)
                 .setPositiveButton(
                         "Sim",
