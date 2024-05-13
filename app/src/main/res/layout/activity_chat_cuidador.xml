@@ -18,7 +18,7 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Voltarr"
+        android:text="Voltar"
         android:textColor="@color/blue"
         android:backgroundTint="@color/white"
         android:layout_alignParentStart="true"
