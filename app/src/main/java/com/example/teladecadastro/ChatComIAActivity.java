@@ -75,7 +75,7 @@ public class ChatComIAActivity extends AppCompatActivity {
     // Método de simulação de resposta do IA (apenas para demonstração)
     private void simulateAIResponse() {
         // Adicione uma mensagem de resposta do IA à lista
-        messageList.add(new Message("Olá! Sou o assistente virtual. Como posso ajudar?", false));
+        messageList.add(new Message("Olá! Sou o assistente virtual do EchoGuardian. Como posso ajudar?", false));
 
         // Atualize o RecyclerView
         messageAdapter.notifyDataSetChanged();
