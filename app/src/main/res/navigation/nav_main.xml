@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.teladecadastro.MainFragment"
+        android:label="Main Fragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_cadastroFragment"
+            app:destination="@id/cadastroFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cadastroFragment"
+        android:name="com.example.teladecadastro.CadastroFragment"
+        android:label="Cadastro Fragment"
+        tools:layout="@layout/fragment_cadastro">
+        <action
+            android:id="@+id/action_cadastroFragment_to_questFragment"
+            app:destination="@id/questFragment" />
+        <action
+            android:id="@+id/action_cadastroFragment_to_telaInicialFragment"
+            app:destination="@id/telaInicialFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/questFragment"
+        android:name="com.example.teladecadastro.QuestFragment"
+        android:label="Quest Fragment"
+        tools:layout="@layout/fragment_quest">
+        <action
+            android:id="@+id/action_questFragment_to_telaInicialFragment"
+            app:destination="@id/telaInicialFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/telaInicialFragment"
+        android:name="com.example.teladecadastro.TelaInicialFragment"
+        android:label="Tela Inicial Fragment"
+        tools:layout="@layout/fragment_tela_inicial">
+        <action
+            android:id="@+id/action_telaInicialFragment_to_alertaFragment"
+            app:destination="@id/alertaFragment" />
+        <action
+            android:id="@+id/action_telaInicialFragment_to_avisosFragment"
+            app:destination="@id/avisosFragment" />
+        <action
+            android:id="@+id/action_telaInicialFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_telaInicialFragment_to_chatCuidadorFragment"
+            app:destination="@id/chatCuidadorFragment" />
+        <action
+            android:id="@+id/action_telaInicialFragment_to_chatComIAFragment"
+            app:destination="@id/chatComIAFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/alertaFragment"
+        android:name="com.example.teladecadastro.AlertaFragment"
+        android:label="Alerta Fragment"
+        tools:layout="@layout/fragment_alerta" />
+
+    <fragment
+        android:id="@+id/avisosFragment"
+        android:name="com.example.teladecadastro.AvisosFragment"
+        android:label="Avisos Fragment"
+        tools:layout="@layout/fragment_avisos" />
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.teladecadastro.CameraFragment"
+        android:label="Camera Fragment"
+        tools:layout="@layout/fragment_camera" />
+
+    <fragment
+        android:id="@+id/chatCuidadorFragment"
+        android:name="com.example.teladecadastro.ChatCuidadorFragment"
+        android:label="Chat Cuidador Fragment"
+        tools:layout="@layout/fragment_chat_cuidador" />
+
+    <fragment
+        android:id="@+id/chatComIAFragment"
+        android:name="com.example.teladecadastro.ChatComIAFragment"
+        android:label="Chat Com IA Fragment"
+        tools:layout="@layout/fragment_chat_com_ia" />
+
+</navigation>
