@@ -2,16 +2,30 @@ package com.example.teladecadastro
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
+data class User(val name: String, val email: String, val password: String, val sex: String, val userType: String)
+
 
 class Cadastro_main : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.cadastro_main)
+
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
 
         val editCompleteName = findViewById<EditText>(R.id.editCompleteName)
         val editEmail = findViewById<EditText>(R.id.editEmail)
@@ -26,7 +40,9 @@ class Cadastro_main : AppCompatActivity() {
             val email = editEmail.text.toString()
             val senha = editSenha.text.toString()
             val sex = editSex.text.toString()
+            Log.d("Cadastro", "Nome: $completeName, Email: $email, Senha: $senha, Sexo: $sex")
 
+            // Validações de entrada do usuário
             if (completeName.isBlank() || email.isBlank() || senha.isBlank() || sex.isBlank()) {
                 Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
             } else {
@@ -40,16 +56,69 @@ class Cadastro_main : AppCompatActivity() {
                             Toast.makeText(this, "Por favor, insira 'M' para masculino ou 'F' para feminino.", Toast.LENGTH_SHORT).show()
                         } else {
                             val selectedId = radioGroup.checkedRadioButtonId
-                            if (selectedId == R.id.radioPaciente) {
-                                val intent = Intent(this, Quest_main::class.java)
-                                intent.putExtra("USERNAME", completeName)
-                                startActivity(intent)
-                            } else if (selectedId == R.id.radioCuidador) {
-                                val intent = Intent(this, Tela_Inicial::class.java)
-                                intent.putExtra("USERNAME", completeName)
-                                startActivity(intent)
-                            } else {
+                            val userType = if (selectedId == R.id.radioPaciente) "Paciente" else if (selectedId == R.id.radioCuidador) "Cuidador" else ""
+
+                            if (userType.isEmpty()) {
                                 Toast.makeText(this, "Por favor, selecione uma opção de cadastro.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // Verificar se o email já está em uso
+                                auth.fetchSignInMethodsForEmail(email)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            val result = task.result?.signInMethods ?: emptyList()
+                                            if (result.isNotEmpty()) {
+                                                // Email já está em uso
+                                                Toast.makeText(this, "O email informado já está em uso.", Toast.LENGTH_SHORT).show()
+                                            } else {
+                                                // Prosseguir com o cadastro
+                                                // Cadastrar usuário no Firebase Authentication
+                                                auth.createUserWithEmailAndPassword(email, senha)
+                                                    .addOnCompleteListener { createUserTask ->
+                                                        if (createUserTask.isSuccessful) {
+                                                            // Continuar com o cadastro no Realtime Database
+                                                            val userId = createUserTask.result?.user?.uid
+                                                            if (userId != null) {
+                                                                // Cadastrar dados adicionais no Realtime Database
+                                                                val user = User(completeName, email, senha, sex, userType)
+                                                                val userRef = database.child("users").child(userId)
+                                                                userRef.setValue(user)
+                                                                    .addOnCompleteListener {
+                                                                        Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                                                                        // Se o usuário for paciente, armazenar os problemas no Firebase
+                                                                        if (userType == "Paciente") {
+                                                                            val problemsRef = userRef.child("user_problems")
+                                                                            val problems = mapOf(
+                                                                                "problem1" to "",
+                                                                                "problem2" to "",
+                                                                                "problem3" to "",
+                                                                                "problem4" to ""
+                                                                            )
+                                                                            problemsRef.setValue(problems)
+                                                                        }
+
+                                                                        val intent = if (userType == "Paciente") {
+                                                                            Intent(this, Quest_main::class.java)
+                                                                        } else {
+                                                                            Intent(this, Tela_Inicial::class.java)
+                                                                        }
+                                                                        intent.putExtra("USERNAME", completeName)
+                                                                        startActivity(intent)
+                                                                        finish()
+                                                                    }
+                                                                    .addOnFailureListener {
+                                                                        Toast.makeText(this, "Erro ao cadastrar no banco de dados.", Toast.LENGTH_SHORT).show()
+                                                                    }
+                                                            }
+                                                        } else {
+                                                            Toast.makeText(this, "Erro ao cadastrar usuário: ${createUserTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                            }
+                                        } else {
+                                            Toast.makeText(this, "Erro ao verificar email: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
                             }
                         }
                     }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "327612655413",
+    "project_id": "echoguardian-94752",
+    "storage_bucket": "echoguardian-94752.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327612655413:android:92e56aeacd76a52561ce7c",
+        "android_client_info": {
+          "package_name": "com.example.teladecadastro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQu_7_JJrkuxknJGpzMIDbhr51-GC2bvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
