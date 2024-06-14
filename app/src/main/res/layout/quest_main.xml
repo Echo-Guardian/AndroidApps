@@ -6,7 +6,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/medi"
     tools:context=".MainActivity">
+    <include
+        layout="@layout/fragment_splash"
 
+        />
     <View
         android:id="@+id/containerLogin"
         android:layout_width="match_parent"

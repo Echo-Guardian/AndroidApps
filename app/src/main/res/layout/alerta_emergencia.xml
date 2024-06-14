@@ -6,6 +6,8 @@
     android:background="@drawable/medi"
     tools:context=".Alerta_main">
 
+
+
     <Button
         android:id="@+id/btnVoltar"
         android:layout_width="88dp"
