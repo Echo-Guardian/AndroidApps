@@ -2,12 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Alerta_main">
-        <State />
-      </entry>
-      <entry key="Tela_Incial">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>
