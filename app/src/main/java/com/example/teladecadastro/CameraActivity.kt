@@ -24,7 +24,7 @@ class CameraActivity : AppCompatActivity() {
 
         webView.setLayerType(WebView.LAYER_TYPE_HARDWARE, null)
 
-        val button = findViewById<Button>(R.id.button)
+        val button = findViewById<Button>(R.id.btnAbrirCameras)
         button.setOnClickListener {
             abrirWebView(webView)
         }
