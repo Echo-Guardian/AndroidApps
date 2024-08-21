@@ -58,10 +58,9 @@
         android:padding="8dp"
         android:text="Voltar"
         android:textColor="@android:color/holo_blue_dark"
-        android:textSize="18sp" />
-
-
-
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="-2dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,7 +28,7 @@ class ChatComIAActivity : AppCompatActivity() {
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var messageList: MutableList<Message>
     private lateinit var generativeModel: GenerativeModel
-    private lateinit var databaseHelperIA: DatabaseIA  // Instância do novo banco de dados
+    private lateinit var databaseHelperIA: DatabaseIA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,14 +94,11 @@ class ChatComIAActivity : AppCompatActivity() {
     }
 
     private fun clearMessages() {
-        // Limpar a lista de mensagens
         messageList.clear()
         messageAdapter.notifyDataSetChanged()
 
-        // Remover todas as mensagens do banco de dados
         databaseHelperIA.clearAllMessages()
 
-        // Exibir uma mensagem de confirmação
         Toast.makeText(this, "Mensagens apagadas", Toast.LENGTH_SHORT).show()
     }
 

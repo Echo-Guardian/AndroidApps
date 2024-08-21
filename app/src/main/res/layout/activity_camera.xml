@@ -25,15 +25,24 @@
 
     <Button
         android:id="@+id/buttonBack"
-        android:layout_width="102dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/white"
+        android:layout_width="88dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@android:color/white"
+        android:padding="8dp"
         android:text="Voltar"
         android:textColor="@android:color/holo_blue_dark"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

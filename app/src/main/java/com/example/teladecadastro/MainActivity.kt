@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         val editSenha = findViewById<EditText>(R.id.editSenha)
         val btnLogar = findViewById<Button>(R.id.btnLogar)
         val txtCad = findViewById<Button>(R.id.txtCad)
+        val buttonFrgt = findViewById<Button>(R.id.buttonFrgt)
 
         btnLogar.setOnClickListener {
             val email = editUsername.text.toString()
@@ -63,6 +64,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        buttonFrgt.setOnClickListener {
+            val email = editUsername.text.toString()
+
+            if (email.isBlank()) {
+                Toast.makeText(this, "Por favor, insira seu email para redefinir a senha.", Toast.LENGTH_SHORT).show()
+            } else {
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Email para redefinição de senha enviado.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Erro ao enviar email: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            }
+        }
 
         txtCad.setOnClickListener {
             val intent = Intent(this, Cadastro_main::class.java)
@@ -70,3 +87,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
