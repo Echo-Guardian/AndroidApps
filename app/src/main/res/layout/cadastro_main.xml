@@ -175,11 +175,11 @@
         android:id="@+id/textView"
         android:layout_width="157dp"
         android:layout_height="22dp"
-        android:layout_marginEnd="108dp"
+        android:layout_marginEnd="92dp"
         android:layout_marginBottom="208dp"
         android:text="𝗘𝘀𝗰𝗼𝗹𝗵𝗮 𝗼 𝘀𝗲𝘂 𝗽𝗮𝗽𝗲𝗹:"
-        android:textSize="16dp"
         android:textColor="@color/black"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/containerLogin"
         app:layout_constraintEnd_toEndOf="parent" />
 

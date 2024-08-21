@@ -41,7 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="𝗜𝗻𝗳𝗼𝗿𝗺𝗲 𝗮𝗼 𝗺𝗲𝗻𝗼𝘀 𝘂𝗺 (𝟭) 𝗽𝗿𝗼𝗯𝗹𝗲𝗺𝗮 𝗱𝗼 𝘀𝗲𝘂 𝗱𝗶𝗮 𝗮 𝗱𝗶𝗮"
-        android:textSize="11sp"
+        android:textSize="12sp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/containerLogin"
         app:layout_constraintHorizontal_bias="0.483"
@@ -53,8 +54,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="276dp"
+        android:layout_marginEnd="228dp"
         android:text="𝗣𝗿𝗼𝗯𝗹𝗲𝗺𝗮 𝟭"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
 
@@ -62,8 +64,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="196dp"
-        android:layout_marginEnd="276dp"
+        android:layout_marginEnd="228dp"
         android:text="𝗣𝗿𝗼𝗯𝗹𝗲𝗺𝗮 𝟮"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/containerLogin" />
 
@@ -71,8 +74,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="296dp"
-        android:layout_marginEnd="256dp"
+        android:layout_marginEnd="204dp"
         android:text=" 𝗣𝗿𝗼𝗯𝗹𝗲𝗺𝗮 𝟯"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/containerLogin"
         app:layout_constraintTop_toTopOf="@+id/containerLogin" />
 
@@ -80,8 +84,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="400dp"
-        android:layout_marginEnd="280dp"
+        android:layout_marginEnd="224dp"
         android:text="𝗣𝗿𝗼𝗯𝗹𝗲𝗺𝗮 𝟰"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/containerLogin" />
 

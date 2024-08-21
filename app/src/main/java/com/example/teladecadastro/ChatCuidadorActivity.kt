@@ -1,9 +1,12 @@
 package com.example.teladecadastro
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -27,6 +30,10 @@ class ChatCuidadorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_cuidador)
+
+        val window: Window = window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.parseColor("#6495ED")
 
         databaseHelper = DatabaseCuidador(this)
         messageList = databaseHelper.getAllMessages().toMutableList()

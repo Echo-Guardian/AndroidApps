@@ -11,6 +11,7 @@
         android:theme="@style/Theme.TelaDeCadastro"
         tools:targetApi="31">
 
+
         <activity android:name=".com.example.teladecadastro.SplashActivity"
             android:exported="true">
             <intent-filter>

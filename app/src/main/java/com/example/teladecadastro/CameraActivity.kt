@@ -1,6 +1,9 @@
 package com.example.teladecadastro
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
@@ -11,6 +14,10 @@ class CameraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+
+        val window: Window = window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.parseColor("#6495ED")
 
         val webView = findViewById<WebView>(R.id.webView)
         webView.webViewClient = WebViewClient()

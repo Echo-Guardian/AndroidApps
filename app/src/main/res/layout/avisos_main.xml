@@ -54,13 +54,15 @@
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@android:color/white"
         android:padding="8dp"
         android:text="Voltar"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="-2dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
