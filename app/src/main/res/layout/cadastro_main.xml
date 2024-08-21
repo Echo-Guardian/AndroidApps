@@ -7,11 +7,6 @@
     android:background="@drawable/medi"
     tools:context=".MainActivity">
 
-
-    <include
-        layout="@layout/fragment_splash"
-
-        />
     <View
         android:id="@+id/containerLogin"
         android:layout_width="match_parent"
@@ -28,8 +23,8 @@
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Boas vindas ao EchoGuardian"
-        android:textSize="20sp"
+        android:text="𝗕𝗼𝗮𝘀 𝘃𝗶𝗻𝗱𝗮𝘀 𝗮𝗼 𝗘𝗰𝗵𝗼𝗚𝘂𝗮𝗿𝗱𝗶𝗮𝗻 "
+        android:textSize="18sp"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_goneMarginTop="30dp"
@@ -43,9 +38,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Informe seus dados de cadastro"
+        android:text="𝗜𝗻𝗳𝗼𝗿𝗺𝗲 𝘀𝗲𝘂𝘀 𝗱𝗮𝗱𝗼𝘀 𝗽𝗮𝗿𝗮 𝗰𝗮𝗱𝗮𝘀𝘁𝗿𝗼"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/containerLogin"
         app:layout_constraintStart_toStartOf="@id/containerLogin"
@@ -72,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginVertical="5dp"
+        android:layout_marginVertical="3dp"
         android:background="@drawable/container_edit_login"
         android:hint="Senha"
         android:inputType="textPassword"
@@ -114,11 +109,11 @@
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="114dp"
+        android:layout_width="123dp"
         android:layout_height="98dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="@id/containerLogin"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="@id/containerLogin"
         app:layout_constraintTop_toBottomOf="@id/editSenha">
 
@@ -128,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:buttonTint="@color/blue"
-            android:text="Cuidador"
+            android:text="𝗖𝘂𝗶𝗱𝗮𝗱𝗼𝗿"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -138,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/blue"
-            android:text="Paciente"
+            android:text="𝗣𝗮𝗰𝗶𝗲𝗻𝘁𝗲"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -153,7 +148,7 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/blue"
         android:padding="15dp"
-        android:text="Cadastrar"
+        android:text="𝗖𝗮𝗱𝗮𝘀𝘁𝗿𝗮𝗿"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -164,14 +159,26 @@
 
     <Button
         android:id="@+id/buttonBack"
-        android:layout_width="88dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
         android:layout_marginTop="4dp"
-        android:backgroundTint="@color/white"
-        android:text="Voltar"
-        android:textColor="@color/blue"
+        android:backgroundTint="@color/transparent"
+        android:text="◀"
+        android:textColor="@color/white"
+        android:textSize="38dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="157dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginBottom="208dp"
+        android:text="𝗘𝘀𝗰𝗼𝗹𝗵𝗮 𝗼 𝘀𝗲𝘂 𝗽𝗮𝗽𝗲𝗹:"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/containerLogin"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

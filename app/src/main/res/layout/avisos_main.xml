@@ -8,10 +8,6 @@
     tools:context=".MainActivity">
 
 
-    <include
-        layout="@layout/fragment_splash"
-
-        />
     <View
         android:id="@+id/containerLogin"
         android:layout_width="match_parent"
@@ -56,13 +52,16 @@
 
     <Button
         android:id="@+id/buttonBack"
-        android:layout_width="88dp"
-        android:layout_height="47dp"
-        android:backgroundTint="@color/white"
-        android:text="Voltar"
-        android:textColor="@color/blue"
+        android:layout_width="81dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="4dp"
+        android:backgroundTint="@color/transparent"
+        android:text="◀"
+        android:textColor="@color/white"
+        android:textSize="38dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

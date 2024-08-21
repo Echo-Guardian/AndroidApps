@@ -1,82 +1,105 @@
-package com.example.teladecadastro;
+package com.example.teladecadastro
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.app.AlertDialog
+import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class ChatCuidadorActivity : AppCompatActivity() {
 
-import java.util.ArrayList;
-import java.util.List;
+    private lateinit var messageList: MutableList<Message>
+    private lateinit var adapter: MessageAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var messageEditText: EditText
+    private lateinit var sendButton: ImageView
+    private lateinit var btnBack: Button
+    private lateinit var menuIcon: ImageView // Ícone de três pontos
+    private lateinit var databaseHelper: DatabaseCuidador
 
-public class ChatCuidadorActivity extends AppCompatActivity {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat_cuidador)
 
-    private List<Message> messageList;
-    private MessageAdapter adapter;
-    private RecyclerView recyclerView;
-    private EditText messageEditText;
-    private ImageView sendButton;
-    private Button btnBack; // Adicionando o botão de voltar
+        databaseHelper = DatabaseCuidador(this)
+        messageList = databaseHelper.getAllMessages().toMutableList()
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_cuidador);
+        recyclerView = findViewById(R.id.messageRecyclerView)
+        adapter = MessageAdapter(messageList)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Inicializar a lista de mensagens
-        messageList = new ArrayList<>();
+        messageEditText = findViewById(R.id.messageEditText)
+        sendButton = findViewById(R.id.sendButton)
+        btnBack = findViewById(R.id.btnBack)
+        menuIcon = findViewById(R.id.menuIcon) // Inicializando o ícone de menu
 
-        // Inicializar a RecyclerView
-        recyclerView = findViewById(R.id.messageRecyclerView);
-        adapter = new MessageAdapter(messageList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        sendButton.setOnClickListener { sendMessage() }
+        btnBack.setOnClickListener { finish() }
 
-        // Inicializar os elementos de entrada de mensagem
-        messageEditText = findViewById(R.id.messageEditText);
-        sendButton = findViewById(R.id.sendButton);
-        btnBack = findViewById(R.id.btnBack); // Referenciando o botão de voltar
+        // Ícone de três pontos
+        menuIcon.setOnClickListener { showPopupMenu(it) }
 
-        // Configurar o clique do botão de envio
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-            }
-        });
-
-        // Configurar o clique do botão de voltar
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Finaliza a atividade e volta para a atividade anterior
-            }
-        });
+        // Remove mensagens antigas
+        databaseHelper.deleteOldMessages()
     }
 
-    private void sendMessage() {
-        // Obter o texto da mensagem do campo de entrada
-        String messageText = messageEditText.getText().toString().trim();
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.menuInflater.inflate(R.menu.menu_chat, popupMenu.menu)
 
-        // Verificar se a mensagem não está vazia
-        if (!messageText.isEmpty()) {
-            // Criar uma nova mensagem
-            long timestamp = System.currentTimeMillis(); // Timestamp da mensagem
-            Message message = new Message(messageText, "Cuidador", timestamp);
-
-            // Adicionar a mensagem à lista e notificar o adaptador
-            messageList.add(message);
-            adapter.notifyItemInserted(messageList.size() - 1);
-
-            // Limpar o campo de entrada após o envio da mensagem
-            messageEditText.setText("");
-
-            // Role automaticamente para a última mensagem
-            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                when (item.itemId) {
+            R.id.clear_conversation -> {
+                showClearConfirmationDialog() // Chama o método de confirmação
+                true
+            }
+                                else -> false
         }
+        }
+
+        popupMenu.show()
+    }
+
+    private fun showClearConfirmationDialog() {
+        AlertDialog.Builder(this)
+                .setTitle("Confirmar")
+                .setMessage("Você realmente deseja limpar a conversa?")
+                .setPositiveButton("Sim") { _, _ -> clearMessages() }
+                        .setNegativeButton("Não", null)
+                .show()
+    }
+
+    private fun sendMessage() {
+        val messageText = messageEditText.text.toString().trim()
+
+        if (messageText.isNotEmpty()) {
+            val timestamp = System.currentTimeMillis()
+            val sender = "Cuidador"
+            databaseHelper.addMessage(messageText, sender, timestamp)
+
+            val message = Message(messageText, sender, timestamp)
+            messageList.add(message)
+            adapter.notifyItemInserted(messageList.size - 1)
+
+            messageEditText.text.clear() // Limpa o campo de texto
+            recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+        } else {
+            Toast.makeText(this, "Digite uma mensagem antes de enviar.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun clearMessages() {
+        databaseHelper.deleteAllMessages() // Chama o método para deletar todas as mensagens
+        messageList.clear() // Limpa a lista de mensagens na UI
+        adapter.notifyDataSetChanged() // Notifica o adaptador sobre a mudança
+        Toast.makeText(this, "Mensagens limpas", Toast.LENGTH_SHORT).show() // Exibe mensagem de confirmação
     }
 }

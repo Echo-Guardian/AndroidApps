@@ -43,7 +43,7 @@
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
         android:paddingTop="15dp"
-        android:background="@drawable/shape_container_categorias"
+        android:background="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view">
 
@@ -60,7 +60,7 @@
                     android:id="@+id/card_emergency"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    app:cardBackgroundColor="@color/cor_config"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp">
                     <TextView
@@ -69,7 +69,7 @@
                         android:layout_gravity="center"
                         android:paddingHorizontal="20dp"
                         android:text="Emergência"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blue"
                         android:textSize="22dp"
                         android:textStyle="bold"/>
 
@@ -90,7 +90,7 @@
                     android:id="@+id/camera"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    app:cardBackgroundColor="@color/cor_config"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp">
                     <TextView
@@ -99,7 +99,7 @@
                         android:layout_gravity="center"
                         android:paddingHorizontal="20dp"
                         android:text="Câmera"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blue"
                         android:textSize="22dp"
                         android:textStyle="bold"/>
 
@@ -119,7 +119,7 @@
                     android:id="@+id/card_chat_cuidador"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    app:cardBackgroundColor="@color/cor_config"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp">
                     <TextView
@@ -128,7 +128,7 @@
                         android:layout_gravity="center"
                         android:paddingHorizontal="20dp"
                         android:text="Chat com o cuidador"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blue"
                         android:textSize="22dp"
                         android:textStyle="bold"/>
 
@@ -148,7 +148,7 @@
                     android:id="@+id/card_chat_ia"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    app:cardBackgroundColor="@color/cor_config"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp">
                     <TextView
@@ -157,7 +157,7 @@
                         android:layout_gravity="center"
                         android:paddingHorizontal="20dp"
                         android:text="Chat com IA"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blue"
                         android:textSize="22dp"
                         android:textStyle="bold"/>
 
@@ -177,7 +177,7 @@
                     android:id="@+id/card_avisos"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    app:cardBackgroundColor="@color/cor_config"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp">
                     <TextView
@@ -186,7 +186,7 @@
                         android:layout_gravity="center"
                         android:paddingHorizontal="20dp"
                         android:text="Avisos"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blue"
                         android:textSize="22dp"
                         android:textStyle="bold"/>
 
@@ -205,25 +205,11 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_config"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    app:cardBackgroundColor="@color/cor_config"
+                    android:layout_height="10dp"
+                    app:cardBackgroundColor="@color/blue"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:paddingHorizontal="20dp"
-                        android:text="Configurações"
-                        android:textColor="@color/white"
-                        android:textSize="22dp"
-                        android:textStyle="bold"/>
 
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/configuracoess"
-                        android:layout_gravity="end" />
 
                 </androidx.cardview.widget.CardView>
 

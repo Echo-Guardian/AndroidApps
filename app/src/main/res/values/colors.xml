@@ -10,5 +10,5 @@
     <color name="cor_mus">#BF003FFF</color>
     <color name="cor_config">#00229C</color>
     <color name="darker_gray">#A9A9A9</color>
-    <color name="transparent">#00000000</color> <!-- Transparente -->
+    <color name="transparent">#00000000</color>
 </resources>

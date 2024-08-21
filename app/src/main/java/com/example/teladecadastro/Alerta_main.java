@@ -22,7 +22,7 @@ public class Alerta_main extends AppCompatActivity {
 
         Button btnAlert = findViewById(R.id.btnAlerta);
         btnCancel = findViewById(R.id.btnCancelar);
-        Button btnVoltar = findViewById(R.id.btnVoltar); // Adicionando a referência ao botão de voltar
+        Button btnVoltar = findViewById(R.id.btnBack);
 
         btnAlert.setOnClickListener(new View.OnClickListener() {
             @Override
