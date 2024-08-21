@@ -25,14 +25,14 @@
 
     <Button
         android:id="@+id/buttonBack"
-        android:layout_width="94dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="102dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/white"
         android:text="Voltar"
-        android:textColor="@color/blue"
-        android:textSize="16dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -68,7 +68,7 @@ public class DatabaseCuidador extends SQLiteOpenHelper {
     }
 
     public void deleteOldMessages() {
-        long fourteenDaysAgo = System.currentTimeMillis() - 14 * 24 * 60 * 60 * 1000L; // 14 dias em milissegundos
+        long fourteenDaysAgo = System.currentTimeMillis() - 14 * 24 * 60 * 60 * 1000L;
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MESSAGES, COLUMN_TIMESTAMP + " < ?", new String[]{String.valueOf(fourteenDaysAgo)});
         db.close();

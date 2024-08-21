@@ -32,17 +32,18 @@ class MainActivity : AppCompatActivity() {
             if (email.isBlank() || senha.isBlank()) {
                 Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
             } else {
-                // Realizar o login usando o Firebase Authentication
                 auth.signInWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            // Login bem-sucedido, redirecionar para a próxima tela
+                            val user = auth.currentUser
+                            val username = user?.displayName ?: "usuário"
+
                             Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, Tela_Inicial::class.java)
+                            intent.putExtra("USERNAME", username)
                             startActivity(intent)
                             finish()
                         } else {
-                            // Se o login falhar, exibir mensagem de erro específica
                             val exception = task.exception
                             if (exception != null) {
                                 when (exception) {
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                     }
             }
         }
+
 
         txtCad.setOnClickListener {
             val intent = Intent(this, Cadastro_main::class.java)

@@ -15,30 +15,29 @@
     <include
         layout="@layout/fragment_splash"/>
 
-    <!-- Botão de voltar -->
     <Button
         android:id="@+id/btnBack"
-        android:layout_width="74dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="4dp"
-        android:backgroundTint="@color/transparent"
-        android:text="◀"
-        android:textColor="@color/white"
-        android:textSize="38dp" />
-
-    <!-- Ícone de três pontos -->
-
-    <!-- RecyclerView para exibir as mensagens -->
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="2dp"
+        android:backgroundTint="@android:color/white"
+        android:elevation="2dp"
+        android:padding="8dp"
+        android:text="Voltar"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/menuIcon"
-        android:layout_width="43dp"
-        android:layout_height="43dp"
+        android:layout_width="63dp"
+        android:layout_height="47dp"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="1dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_3pontos" />
@@ -63,11 +62,10 @@
         android:background="@android:color/white"
         android:elevation="6dp">
 
-        <!-- Entrada de texto para digitar a mensagem -->
         <EditText
             android:id="@+id/messageEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_toStartOf="@id/sendButton"
             android:background="@drawable/edit_text_background"
             android:hint="Digite sua mensagem..."
@@ -76,7 +74,6 @@
             android:textSize="16sp"
             android:elevation="2dp" />
 
-        <!-- Botão de envio -->
         <ImageView
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
