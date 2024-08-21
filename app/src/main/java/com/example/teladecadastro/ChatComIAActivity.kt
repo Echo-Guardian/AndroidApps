@@ -111,7 +111,7 @@ class ChatComIAActivity : AppCompatActivity() {
             val userMessage = Message(messageText, "Usuário", timestamp)
             messageList.add(userMessage)
             messageAdapter.notifyItemInserted(messageList.size - 1)
-            databaseHelperIA.addMessage(messageText, "Usuário", timestamp) // Adicionar ao novo banco de dados
+            databaseHelperIA.addMessage(messageText, "Usuário", timestamp)
 
             // Limpar o campo de entrada
             messageEditText.setText("")
