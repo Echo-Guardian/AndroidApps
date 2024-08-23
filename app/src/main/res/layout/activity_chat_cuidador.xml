@@ -64,16 +64,17 @@
 
         <EditText
             android:id="@+id/messageEditText"
-            android:layout_width="match_parent"
+            android:layout_width="285dp"
             android:layout_height="55dp"
+            android:layout_marginEnd="59dp"
             android:layout_toStartOf="@id/sendButton"
             android:background="@drawable/edit_text_background"
+            android:elevation="2dp"
             android:hint="Digite sua mensagem..."
+            android:padding="12dp"
             android:textColor="@color/black"
             android:textColorHint="@android:color/darker_gray"
-            android:padding="12dp"
-            android:textSize="16sp"
-            android:elevation="2dp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/sendButton"
@@ -86,5 +87,13 @@
             android:padding="12dp"
             android:elevation="2dp"
             app:tint="@android:color/holo_blue_dark" />
+
+        <ImageView
+            android:id="@+id/mic"
+            android:layout_width="40dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="1dp"
+            android:layout_toStartOf="@+id/sendButton"
+            app:srcCompat="@drawable/microfone" />
     </RelativeLayout>
 </RelativeLayout>
