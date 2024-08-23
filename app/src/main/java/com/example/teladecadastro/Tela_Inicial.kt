@@ -3,7 +3,6 @@ package com.example.teladecadastro
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
@@ -13,6 +12,8 @@ import java.util.Calendar
 
 class Tela_Inicial : AppCompatActivity() {
 
+    private var username: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.telainicial)
@@ -21,7 +22,9 @@ class Tela_Inicial : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.parseColor("#6495ED")
 
-        val username = intent.getStringExtra("USERNAME")
+        // Recupera o nome do usuário do Intent se estiver disponível
+        username = intent.getStringExtra("USERNAME")
+
         setGreeting(username)
 
         val card_emergency = findViewById<CardView>(R.id.card_emergency)
@@ -53,6 +56,11 @@ class Tela_Inicial : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Atualiza a saudação quando a atividade volta para o primeiro plano
+        setGreeting(username)
+    }
 
     private fun setGreeting(username: String?) {
         val greetingTextView = findViewById<TextView>(R.id.text_categorias)

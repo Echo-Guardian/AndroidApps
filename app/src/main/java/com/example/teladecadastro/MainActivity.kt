@@ -12,21 +12,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         val window: Window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.parseColor("#6495ED")
 
         auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
 
         val editUsername = findViewById<EditText>(R.id.editUsername)
         val editSenha = findViewById<EditText>(R.id.editSenha)
@@ -44,14 +47,19 @@ class MainActivity : AppCompatActivity() {
                 auth.signInWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            val user = auth.currentUser
-                            val username = user?.displayName ?: "usuário"
-
-                            Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, Tela_Inicial::class.java)
-                            intent.putExtra("USERNAME", username)
-                            startActivity(intent)
-                            finish()
+                            val userId = auth.currentUser?.uid
+                            if (userId != null) {
+                                database.child("users").child(userId).get().addOnSuccessListener { dataSnapshot ->
+                                    val username = dataSnapshot.child("name").value as? String ?: "usuário"
+                                    Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this, Tela_Inicial::class.java)
+                                    intent.putExtra("USERNAME", username)
+                                    startActivity(intent)
+                                    finish()
+                                }.addOnFailureListener {
+                                    Toast.makeText(this, "Erro ao recuperar dados do usuário.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         } else {
                             val exception = task.exception
                             if (exception != null) {
@@ -95,6 +103,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
