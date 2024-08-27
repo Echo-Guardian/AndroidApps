@@ -39,7 +39,7 @@
     <LinearLayout
         android:id="@+id/container_categorias"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="450dp"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
         android:paddingTop="15dp"
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:paddingHorizontal="20dp"
-                        android:text="Chat com o cuidador"
+                        android:text="Chat com cuidador"
                         android:textColor="@color/blue"
                         android:textSize="22dp"
                         android:textStyle="bold"/>

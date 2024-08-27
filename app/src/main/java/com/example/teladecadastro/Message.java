@@ -5,31 +5,47 @@ public class Message {
     private String text;
     private String sender;
     private long timestamp;
+    private String audioFilePath; // Caminho do arquivo de áudio
+    private int duration; // Duração do áudio em milissegundos
 
-    // Construtor que aceita apenas o texto e um booleano (não parece ser usado, mas pode ser mantido se necessário)
-    public Message(String text, boolean b) {
-        this.text = text;
-    }
-
-    // Construtor que aceita texto, remetente e timestamp
     public Message(String text, String sender, long timestamp) {
         this.text = text;
         this.sender = sender;
         this.timestamp = timestamp;
+        this.audioFilePath = null; // Inicializa como null se não for áudio
+        this.duration = 0; // Inicializa a duração como 0
     }
 
-    // Getter para o texto da mensagem
+    public Message(String audioFilePath, int duration, String sender, long timestamp) {
+        this.audioFilePath = audioFilePath;
+        this.duration = duration;
+        this.sender = sender;
+        this.timestamp = timestamp;
+        this.text = null; // Pode ser o caminho do áudio
+    }
+
     public String getText() {
         return text;
     }
 
-    // Getter para o remetente da mensagem
     public String getSender() {
         return sender;
     }
 
-    // Getter para o timestamp da mensagem
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public String getAudioFilePath() {
+        return audioFilePath; // Retorna o caminho do arquivo de áudio
+    }
+
+    public int getDuration() {
+        return duration; // Retorna a duração do áudio
+    }
+
+    // Método para verificar se a mensagem é um áudio
+    public boolean isAudioMessage() {
+        return audioFilePath != null && audioFilePath.endsWith(".3gp");
     }
 }

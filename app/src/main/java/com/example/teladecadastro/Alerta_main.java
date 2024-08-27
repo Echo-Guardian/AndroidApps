@@ -41,7 +41,7 @@ public class Alerta_main extends AppCompatActivity {
         btnVoltar.setOnClickListener(new View.OnClickListener() { // Adicionando o OnClickListener ao botão de voltar
             @Override
             public void onClick(View v) {
-                finish(); // Finaliza a atividade e volta para a atividade anterior
+                finish();
             }
         });
     }
@@ -70,6 +70,7 @@ public class Alerta_main extends AppCompatActivity {
 
     private void activateEmergency() {
         if (mediaPlayer != null) {
+            mediaPlayer.setLooping(true);
             mediaPlayer.start();
         }
 

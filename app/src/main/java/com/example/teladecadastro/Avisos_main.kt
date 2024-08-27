@@ -23,7 +23,6 @@ class Avisos_main : AppCompatActivity() {
 
         buttonBack.setOnClickListener {
             val intent = Intent()
-            // Obtendo o nome do usuário da SharedPreferences da Tela_Inicial
             val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
             val username = sharedPreferences.getString("username", "usuário")
             intent.putExtra("USERNAME", username)

@@ -22,7 +22,6 @@ class Tela_Inicial : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.parseColor("#6495ED")
 
-        // Recupera o nome do usuário do Intent se estiver disponível
         username = intent.getStringExtra("USERNAME")
 
         setGreeting(username)

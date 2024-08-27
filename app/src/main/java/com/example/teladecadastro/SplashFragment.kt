@@ -17,9 +17,7 @@ class SplashFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_splash, container, false)
 
-        // Delay of 3 seconds
         Handler(Looper.getMainLooper()).postDelayed({
-            // Start MainActivity after the delay
             startActivity(Intent(activity, MainActivity::class.java))
             activity?.finish()
         }, 3000)
