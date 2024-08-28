@@ -39,7 +39,7 @@
     <LinearLayout
         android:id="@+id/container_categorias"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="465dp"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
         android:paddingTop="15dp"

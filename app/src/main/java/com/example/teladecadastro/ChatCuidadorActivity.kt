@@ -221,8 +221,6 @@ class ChatCuidadorActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 Toast.makeText(this, "Permissões concedidas", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Permissões não concedidas", Toast.LENGTH_SHORT).show()
             }
         }
     }
