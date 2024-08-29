@@ -122,7 +122,6 @@ class ChatCuidadorActivity : AppCompatActivity() {
             recordButton.setImageResource(R.drawable.ic_audio)
             Toast.makeText(this, "Gravação finalizada", Toast.LENGTH_SHORT).show()
 
-            // Obter a duração do áudio gravado
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setDataSource(audioFileName)
             mediaPlayer!!.prepare()
@@ -190,7 +189,8 @@ class ChatCuidadorActivity : AppCompatActivity() {
         if (messageText.isNotEmpty()) {
             val timestamp = System.currentTimeMillis()
             val sender = "Cuidador"
-            databaseHelper.addMessage(messageText, sender, timestamp)
+
+            databaseHelper.addMessage(messageText, sender, timestamp, 0)
 
             val message = Message(messageText, sender, timestamp)
             messageList.add(message)
@@ -212,17 +212,6 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                Toast.makeText(this, "Permissões concedidas", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     override fun onDestroy() {

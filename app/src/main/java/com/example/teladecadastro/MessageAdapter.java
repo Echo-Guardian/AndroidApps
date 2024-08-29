@@ -16,6 +16,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private static final int TYPE_TEXT = 0;
     private static final int TYPE_AUDIO = 1;
+    private static final int TYPE_AI = 2;
 
     private List<Message> messages;
     private MediaPlayer mediaPlayer;
@@ -26,7 +27,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        return messages.get(position).isAudioMessage() ? TYPE_AUDIO : TYPE_TEXT;
+        if (messages.get(position).isAudioMessage()) {
+            return TYPE_AUDIO;
+        } else if (messages.get(position).isAiMessage()) {
+            return TYPE_AI;
+        } else {
+            return TYPE_TEXT;
+        }
     }
 
     @NonNull
@@ -35,6 +42,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (viewType == TYPE_AUDIO) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.audio_messege, parent, false);
             return new AudioMessageViewHolder(view);
+        } else if (viewType == TYPE_AI) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_ia, parent, false);
+            return new AiMessageViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
             return new TextMessageViewHolder(view);
@@ -45,6 +55,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof AudioMessageViewHolder) {
             ((AudioMessageViewHolder) holder).bind(messages.get(position));
+        } else if (holder instanceof AiMessageViewHolder) {
+            ((AiMessageViewHolder) holder).bind(messages.get(position));
         } else if (holder instanceof TextMessageViewHolder) {
             ((TextMessageViewHolder) holder).bind(messages.get(position));
         }
@@ -119,6 +131,19 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    class AiMessageViewHolder extends RecyclerView.ViewHolder {
+        private TextView messageTextView;
+
+        public AiMessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            messageTextView = itemView.findViewById(R.id.messageTextView);
+        }
+
+        public void bind(Message message) {
+            messageTextView.setText(message.getText());
         }
     }
 
