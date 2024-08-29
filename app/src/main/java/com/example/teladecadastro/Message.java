@@ -57,6 +57,6 @@ public class Message {
     }
 
     public boolean isAiMessage() {
-        return text != null && sender.equals("IA"); // Ajuste conforme a lógica do seu aplicativo
+        return text != null && sender.equals("IA");
     }
 }

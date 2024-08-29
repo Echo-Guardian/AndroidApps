@@ -45,10 +45,8 @@ class ChatComIAActivity : AppCompatActivity() {
         messageEditText = findViewById(R.id.messageEditText)
         sendButton = findViewById(R.id.sendButton)
 
-        // Inicializar o novo banco de dados
         databaseHelperIA = DatabaseIA(this)
 
-        // Inicializar a lista de mensagens a partir do banco de dados
         messageList = ArrayList(databaseHelperIA.getAllMessages())
         messageAdapter = MessageAdapter(messageList)
         messageRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -60,17 +58,14 @@ class ChatComIAActivity : AppCompatActivity() {
             sendMessage()
         }
 
-        // Botão voltar
         val btnBack: Button = findViewById(R.id.btnBack)
         btnBack.setOnClickListener {
             finish()
         }
 
-        // Ícone de três pontos
         val menuIcon: ImageView = findViewById(R.id.menuIcon)
         menuIcon.setOnClickListener { showPopupMenu(it) }
 
-        // Remover mensagens antigas
         databaseHelperIA.deleteOldMessages()
     }
 
@@ -113,17 +108,14 @@ class ChatComIAActivity : AppCompatActivity() {
     private fun sendMessage() {
         val messageText = messageEditText.text.toString().trim()
         if (messageText.isNotEmpty()) {
-            // Adicionar a mensagem do usuário à lista e ao banco de dados
             val timestamp = System.currentTimeMillis()
             val userMessage = Message(messageText, "Usuário", timestamp)
             messageList.add(userMessage)
             messageAdapter.notifyItemInserted(messageList.size - 1)
             databaseHelperIA.addMessage(messageText, "Usuário", timestamp)
 
-            // Limpar o campo de entrada
             messageEditText.setText("")
 
-            // Responder usando o modelo generativo
             GlobalScope.launch {
                 try {
                     val response = generativeModel.generateContent(messageText)
@@ -135,12 +127,10 @@ class ChatComIAActivity : AppCompatActivity() {
                 }
             }
         } else {
-            // Exibir mensagem de aviso
             Toast.makeText(this, "Digite uma mensagem", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // Exibir resposta na thread da UI
     private fun displayResponse(responseText: String) {
         runOnUiThread {
             val aiMessage = Message(responseText, "IA", System.currentTimeMillis())

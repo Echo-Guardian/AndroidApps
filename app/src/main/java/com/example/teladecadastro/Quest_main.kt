@@ -43,11 +43,9 @@ class Quest_main : AppCompatActivity() {
                 problem4.text.toString()
             )
 
-            // Verificar se pelo menos um problema foi preenchido
             val atLeastOneProblem = problems.any { it.isNotEmpty() }
 
             if (atLeastOneProblem) {
-                // Armazenar os problemas no Firebase Realtime Database
                 val userId = FirebaseAuth.getInstance().currentUser?.uid
                 userId?.let { uid ->
                     val userProblemsRef = database.child("users").child(uid).child("user_problems")

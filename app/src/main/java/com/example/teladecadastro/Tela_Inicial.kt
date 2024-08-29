@@ -57,7 +57,6 @@ class Tela_Inicial : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Atualiza a saudação quando a atividade volta para o primeiro plano
         setGreeting(username)
     }
 
