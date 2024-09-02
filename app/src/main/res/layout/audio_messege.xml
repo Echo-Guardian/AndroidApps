@@ -32,7 +32,8 @@
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:layout_weight="1"
-        android:progress="0" />
+        android:progress="0"
+        android:thumbTint="@color/blue" />
 
     <TextView
         android:id="@+id/audioDurationTextView"

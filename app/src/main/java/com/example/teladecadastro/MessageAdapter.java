@@ -1,6 +1,7 @@
 package com.example.teladecadastro;
 
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private static final int TYPE_TEXT = 0;
     private static final int TYPE_AUDIO = 1;
-    private static final int TYPE_AI = 2;
 
     private List<Message> messages;
     private MediaPlayer mediaPlayer;
+    private Handler handler = new Handler();
+    private Runnable updateSeekBar;
 
     public MessageAdapter(List<Message> messages) {
         this.messages = messages;
@@ -29,8 +31,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemViewType(int position) {
         if (messages.get(position).isAudioMessage()) {
             return TYPE_AUDIO;
-        } else if (messages.get(position).isAiMessage()) {
-            return TYPE_AI;
         } else {
             return TYPE_TEXT;
         }
@@ -42,9 +42,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (viewType == TYPE_AUDIO) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.audio_messege, parent, false);
             return new AudioMessageViewHolder(view);
-        } else if (viewType == TYPE_AI) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_ia, parent, false);
-            return new AiMessageViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
             return new TextMessageViewHolder(view);
@@ -55,8 +52,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof AudioMessageViewHolder) {
             ((AudioMessageViewHolder) holder).bind(messages.get(position));
-        } else if (holder instanceof AiMessageViewHolder) {
-            ((AiMessageViewHolder) holder).bind(messages.get(position));
         } else if (holder instanceof TextMessageViewHolder) {
             ((TextMessageViewHolder) holder).bind(messages.get(position));
         }
@@ -71,6 +66,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
+            handler.removeCallbacks(updateSeekBar);
         }
     }
 
@@ -120,30 +116,46 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 mediaPlayer.setDataSource(filePath);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
+
+                // Configurar o SeekBar e atualizar conforme o áudio é reproduzido
+                audioSeekBar.setMax(mediaPlayer.getDuration());
+                updateSeekBar = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                            audioSeekBar.setProgress(mediaPlayer.getCurrentPosition());
+                            handler.postDelayed(this, 100);
+                        }
+                    }
+                };
+                handler.post(updateSeekBar);
+
+                // Quando o áudio terminar
                 mediaPlayer.setOnCompletionListener(mp -> {
                     playButton.setVisibility(View.VISIBLE);
                     pauseButton.setVisibility(View.GONE);
+                    audioSeekBar.setProgress(0);
                     releaseMediaPlayer();
                 });
 
-                mediaPlayer.setOnSeekCompleteListener(mp -> audioSeekBar.setProgress(mp.getCurrentPosition()));
+                audioSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser && mediaPlayer != null) {
+                            mediaPlayer.seekTo(progress);
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {}
+                });
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    class AiMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView messageTextView;
-
-        public AiMessageViewHolder(@NonNull View itemView) {
-            super(itemView);
-            messageTextView = itemView.findViewById(R.id.messageTextView);
-        }
-
-        public void bind(Message message) {
-            messageTextView.setText(message.getText());
         }
     }
 
