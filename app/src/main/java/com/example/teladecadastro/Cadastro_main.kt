@@ -67,6 +67,8 @@ class Cadastro_main : AppCompatActivity() {
                                 else -> ""
                             }
 
+
+
                             if (userType.isEmpty()) {
                                 Toast.makeText(this, "Por favor, selecione uma opção de cadastro.", Toast.LENGTH_SHORT).show()
                             } else {
@@ -94,16 +96,20 @@ class Cadastro_main : AppCompatActivity() {
                                                                         "problem3" to "",
                                                                         "problem4" to ""
                                                                     )
-                                                                    problemsRef.setValue(problems)
+                                                                    problemsRef.setValue(problems).addOnCompleteListener {
+                                                                        val intent = Intent(this, Quest_main::class.java)
+                                                                        intent.putExtra("USERNAME", completeName)
+                                                                        startActivity(intent)
+                                                                        finish()
+                                                                    }.addOnFailureListener {
+                                                                        Toast.makeText(this, "Erro ao cadastrar problemas do usuário.", Toast.LENGTH_SHORT).show()
+                                                                    }
+                                                                } else {
+                                                                    val intent = Intent(this, Cuidador_tela::class.java)
+                                                                    intent.putExtra("USERNAME", completeName)
+                                                                    startActivity(intent)
+                                                                    finish()
                                                                 }
-
-                                                                val intent = when (userType) {
-                                                                    "Paciente" -> Intent(this, Quest_main::class.java)
-                                                                    else -> Intent(this, Tela_Inicial::class.java)
-                                                                }
-                                                                intent.putExtra("USERNAME", completeName)
-                                                                startActivity(intent)
-                                                                finish()
                                                             }.addOnFailureListener {
                                                                 Toast.makeText(this, "Erro ao cadastrar no banco de dados.", Toast.LENGTH_SHORT).show()
                                                             }
@@ -123,6 +129,7 @@ class Cadastro_main : AppCompatActivity() {
                 }
             }
         }
+
 
         buttonBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)

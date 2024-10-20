@@ -58,7 +58,7 @@ class Quest_main : AppCompatActivity() {
                     userProblemsRef.setValue(problemsMap)
                         .addOnCompleteListener {
                             Toast.makeText(this, "Problemas enviados com sucesso!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, Tela_Inicial::class.java)
+                            val intent = Intent(this, Paciente_tela::class.java)
                             intent.putExtra("USERNAME", username)
                             startActivity(intent)
                             finish()

@@ -16,6 +16,21 @@
     </fragment>
 
     <fragment
+        android:id="@+id/pacienteFragment"
+        android:name="com.example.teladecadastro.PacienteFragment"
+        android:label="Paciente Fragment"
+        tools:layout="@layout/paciente_tela">
+    </fragment>
+
+    <fragment
+        android:id="@+id/cuidadorFragment"
+        android:name="com.example.teladecadastro.CuidadorFragment"
+        android:label="Cuidador Fragment"
+        tools:layout="@layout/cuidador_tela">
+    </fragment>
+
+
+    <fragment
         android:id="@+id/cadastroFragment"
         android:name="com.example.teladecadastro.CadastroFragment"
         android:label="Cadastro Fragment"

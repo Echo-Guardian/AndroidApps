@@ -20,7 +20,6 @@
         </activity>
         <activity android:name=".MainActivity"
             android:exported="true" />
-        <activity android:name=".Tela_Inicial" />
         <activity android:name=".Cadastro_main" />
         <activity android:name=".Quest_main" />
         <activity android:name=".Alerta_main" />
@@ -28,6 +27,8 @@
         <activity android:name=".CameraActivity"/>
         <activity android:name=".ChatCuidadorActivity" />
         <activity android:name=".ChatComIAActivity" />
+        <activity android:name=".Paciente_tela" />
+        <activity android:name=".Cuidador_tela" />
     </application>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />

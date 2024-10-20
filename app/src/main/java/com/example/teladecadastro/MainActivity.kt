@@ -51,8 +51,19 @@ class MainActivity : AppCompatActivity() {
                             if (userId != null) {
                                 database.child("users").child(userId).get().addOnSuccessListener { dataSnapshot ->
                                     val username = dataSnapshot.child("name").value as? String ?: "usuário"
+                                    val userType = dataSnapshot.child("userType").value as? String ?: ""
+
                                     Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this, Tela_Inicial::class.java)
+
+                                    val intent = when (userType) {
+                                        "Paciente" -> Intent(this, Paciente_tela::class.java)
+                                        "Cuidador" -> Intent(this, Cuidador_tela::class.java)
+                                        else -> {
+                                            Toast.makeText(this, "Tipo de usuário desconhecido.", Toast.LENGTH_SHORT).show()
+                                            Intent(this, MainActivity::class.java) // Ou alguma tela padrão
+                                        }
+                                    }
+
                                     intent.putExtra("USERNAME", username)
                                     startActivity(intent)
                                     finish()
@@ -79,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                     }
             }
         }
+
 
         buttonFrgt.setOnClickListener {
             val email = editUsername.text.toString()
