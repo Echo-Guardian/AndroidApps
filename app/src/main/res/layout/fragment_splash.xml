@@ -10,13 +10,13 @@
 
     <ImageView
         android:id="@+id/image_logo"
-        android:layout_width="398dp"
-        android:layout_height="559dp"
+        android:layout_width="345dp"
+        android:layout_height="690dp"
         android:src="@drawable/cruzinha"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.924"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.377" />
+        app:layout_constraintVertical_bias="0.121" />
 </androidx.constraintlayout.widget.ConstraintLayout>
