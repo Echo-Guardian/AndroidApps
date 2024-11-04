@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 class Avisos_main : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.avisos_main)
