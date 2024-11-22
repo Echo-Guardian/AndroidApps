@@ -2,6 +2,7 @@ package com.example.teladecadastro;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -50,12 +54,24 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof AudioMessageViewHolder) {
-            ((AudioMessageViewHolder) holder).bind(messages.get(position));
-        } else if (holder instanceof TextMessageViewHolder) {
-            ((TextMessageViewHolder) holder).bind(messages.get(position));
+        Message message = messages.get(position);
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (holder instanceof TextMessageViewHolder) {
+            TextMessageViewHolder textHolder = (TextMessageViewHolder) holder;
+            textHolder.bind(message);
+
+            // Ajustar o alinhamento com base no remetente
+            if (message.getSender().equals(currentUserId)) {
+                textHolder.messageTextView.setGravity(Gravity.END);
+                textHolder.messageTextView.setBackgroundResource(R.drawable.bg_message_sent); // Mensagem enviada
+            } else {
+                textHolder.messageTextView.setGravity(Gravity.START);
+                textHolder.messageTextView.setBackgroundResource(R.drawable.bg_message_received); // Mensagem recebida
+            }
         }
     }
+
 
     @Override
     public int getItemCount() {
