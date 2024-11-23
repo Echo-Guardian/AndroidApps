@@ -2,6 +2,7 @@ package com.example.teladecadastro;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -50,12 +54,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof AudioMessageViewHolder) {
-            ((AudioMessageViewHolder) holder).bind(messages.get(position));
-        } else if (holder instanceof TextMessageViewHolder) {
-            ((TextMessageViewHolder) holder).bind(messages.get(position));
+        Message message = messages.get(position);
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (holder instanceof TextMessageViewHolder) {
+            TextMessageViewHolder textHolder = (TextMessageViewHolder) holder;
+            textHolder.bind(message);
+
+            if (message.getSender().equals(currentUserId)) {
+                textHolder.messageTextView.setGravity(Gravity.END);
+                textHolder.messageTextView.setBackgroundResource(R.drawable.bg_message_sent);
+            } else {
+                textHolder.messageTextView.setGravity(Gravity.START);
+                textHolder.messageTextView.setBackgroundResource(R.drawable.bg_message_received);
+            }
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -117,7 +132,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 mediaPlayer.prepare();
                 mediaPlayer.start();
 
-                // Configurar o SeekBar e atualizar conforme o áudio é reproduzido
                 audioSeekBar.setMax(mediaPlayer.getDuration());
                 updateSeekBar = new Runnable() {
                     @Override
@@ -130,7 +144,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 };
                 handler.post(updateSeekBar);
 
-                // Quando o áudio terminar
                 mediaPlayer.setOnCompletionListener(mp -> {
                     playButton.setVisibility(View.VISIBLE);
                     pauseButton.setVisibility(View.GONE);

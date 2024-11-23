@@ -18,8 +18,10 @@ class SplashFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_splash, container, false)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(activity, MainActivity::class.java))
-            activity?.finish()
+            activity?.let {
+                startActivity(Intent(it, MainActivity::class.java))
+                it.finish()
+            }
         }, 3000)
 
         return view

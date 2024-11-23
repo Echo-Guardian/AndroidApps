@@ -17,6 +17,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
@@ -41,12 +42,6 @@ class Cuidador_tela : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.item_link_patient -> {
                     showLinkPatientDialog()
-                    true
-                }
-                R.id.item1 -> {
-                    true
-                }
-                R.id.item2 -> {
                     true
                 }
                 else -> false
@@ -154,15 +149,38 @@ class Cuidador_tela : AppCompatActivity() {
     private fun linkPatient(patientId: String) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
-            val db = FirebaseFirestore.getInstance()
-            val linkRef = db.collection("cuidador_pacientes").document(userId).collection("pacientes").document(patientId)
-            linkRef.set(mapOf("linked" to true)).addOnCompleteListener { task ->
+            val db = FirebaseDatabase.getInstance()
+            val patientRef = db.reference.child("users").child(patientId)
+
+            // Verificar se o ID do paciente existe
+            patientRef.get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Paciente vinculado com sucesso!", Toast.LENGTH_SHORT).show()
+                    val dataSnapshot = task.result
+                    if (dataSnapshot.exists()) {
+                        // Paciente encontrado, criar conexão
+                        val linkRef = db.reference.child("conexoes").child("$userId-$patientId")
+                        linkRef.setValue(mapOf("cuidadorID" to userId, "pacienteID" to patientId))
+                            .addOnCompleteListener { linkTask ->
+                                if (linkTask.isSuccessful) {
+                                    Toast.makeText(this, "Paciente vinculado com sucesso!", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this, ChatCuidadorActivity::class.java)
+                                    intent.putExtra("CONNECTION_ID", "$userId-$patientId")
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(this, "Erro ao criar a conexão: ${linkTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    } else {
+                        // Paciente não encontrado
+                        Toast.makeText(this, "ID do paciente não encontrado.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(this, "Erro ao vincular paciente.", Toast.LENGTH_SHORT).show()
+                    // Erro na conexão com o Firebase
+                    Toast.makeText(this, "Erro ao verificar ID: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
+        } else {
+            Toast.makeText(this, "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
         }
     }
 

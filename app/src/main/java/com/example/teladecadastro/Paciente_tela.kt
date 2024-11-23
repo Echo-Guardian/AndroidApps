@@ -10,6 +10,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -116,6 +117,10 @@ class Paciente_tela : AppCompatActivity() {
                 val idTextView = findViewById<TextView>(R.id.nav_header_id_value)
                 idTextView.text = userId
 
+                idTextView.setOnClickListener {
+                    copyToClipboard(userId)
+                }
+
                 val problemsTextView = findViewById<TextView>(R.id.nav_header_problemas)
                 problemsTextView.text = problemsList
             }.addOnFailureListener {
@@ -123,6 +128,7 @@ class Paciente_tela : AppCompatActivity() {
             }
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -164,4 +170,12 @@ class Paciente_tela : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    private fun copyToClipboard(text: String) {
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val clip = android.content.ClipData.newPlainText("ID do Paciente", text)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(this, "ID copiado para a área de transferência!", Toast.LENGTH_SHORT).show()
+    }
+
 }

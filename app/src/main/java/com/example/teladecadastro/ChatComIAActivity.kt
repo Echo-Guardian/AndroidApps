@@ -136,7 +136,7 @@ class ChatComIAActivity : AppCompatActivity() {
             val aiMessage = Message(responseText, "IA", System.currentTimeMillis())
             messageList.add(aiMessage)
             messageAdapter.notifyItemInserted(messageList.size - 1)
-            databaseHelperIA.addMessage(responseText, "IA", System.currentTimeMillis()) // Adicionar ao novo banco de dados
+            databaseHelperIA.addMessage(responseText, "IA", System.currentTimeMillis())
             messageRecyclerView.scrollToPosition(messageList.size - 1)
         }
     }
