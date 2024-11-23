@@ -146,6 +146,7 @@ class Cuidador_tela : AppCompatActivity() {
         dialog.show()
     }
 
+
     private fun linkPatient(patientId: String) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
