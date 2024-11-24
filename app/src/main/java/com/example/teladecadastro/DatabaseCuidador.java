@@ -33,7 +33,8 @@ public class DatabaseCuidador extends SQLiteOpenHelper {
                 COLUMN_TEXT + " TEXT, " +
                 COLUMN_SENDER + " TEXT, " +
                 COLUMN_TIMESTAMP + " LONG, " +
-                COLUMN_DURATION + " INTEGER)";
+                COLUMN_DURATION + " INTEGER, " +
+                "user_id INTEGER NOT NULL)"; // Associar mensagens ao usuário
         db.execSQL(createTable);
     }
 
@@ -54,7 +55,24 @@ public class DatabaseCuidador extends SQLiteOpenHelper {
         db.insert(TABLE_MESSAGES, null, values);
         db.close();
     }
+    public List<Message> getMessagesByUserId(String userId) {
+        List<Message> messages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_MESSAGES, null, "user_id=?", new String[]{userId}, null, null, null);
 
+        if (cursor.moveToFirst()) {
+            do {
+                String text = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TEXT));
+                String sender = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SENDER));
+                long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP));
+                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_DURATION));
+                messages.add(new Message(text, sender, timestamp));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return messages;
+    }
     public List<Message> getAllMessages() {
         List<Message> messages = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

@@ -51,7 +51,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return new TextMessageViewHolder(view);
         }
     }
-
+    public void addMessage(Message message) {
+        messages.add(message);
+        notifyItemInserted(messages.size() - 1);
+    }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
