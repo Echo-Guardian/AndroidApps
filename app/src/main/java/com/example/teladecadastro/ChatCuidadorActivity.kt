@@ -104,7 +104,6 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
 
     private fun createOrGetConnection(cuidadorId: String, patientId: String, callback: (String?) -> Unit) {
-        // Gera um identificador único para a conexão
         val connectionKey = "${cuidadorId}-${patientId}"
         val connectionRef = FirebaseDatabase.getInstance().reference.child("conexoes").child(connectionKey)
 
@@ -131,7 +130,7 @@ class ChatCuidadorActivity : AppCompatActivity() {
                             callback(null)
                         }
                 } else {
-                    // Se a conexão já existir, apenas reutiliza o connectionId
+                    // Reutiliza a conexão existente
                     connectionId = connectionKey
                     callback(connectionKey)
                 }
@@ -373,7 +372,7 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
         val message = mapOf(
             "text" to messageText,
-            "sender" to FirebaseAuth.getInstance().currentUser?.uid,
+            "sender" to FirebaseAuth.getInstance().currentUser?.uid, // Envia o ID do usuário logado
             "timestamp" to System.currentTimeMillis()
         )
 
