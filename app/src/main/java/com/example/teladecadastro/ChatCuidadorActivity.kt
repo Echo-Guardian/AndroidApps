@@ -60,7 +60,6 @@ class ChatCuidadorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_cuidador)
 
-        // Obtém o ID do cuidador logado no Firebase Authentication
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserId == null) {
             Toast.makeText(this, "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
@@ -68,7 +67,7 @@ class ChatCuidadorActivity : AppCompatActivity() {
             return
         }
 
-        // Configuração da interface
+        // Inicializa a interface do RecyclerView
         recyclerView = findViewById(R.id.messageRecyclerView)
         messageList = mutableListOf()
         adapter = MessageAdapter(messageList)
@@ -91,16 +90,14 @@ class ChatCuidadorActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
 
-        // Inicializa o SharedPreferences para salvar e recuperar o connectionId
+        // Configuração do SharedPreferences
         val sharedPreferences = getSharedPreferences("chat_preferences", Context.MODE_PRIVATE)
         val savedConnectionId = sharedPreferences.getString("CONNECTION_ID", null)
 
         if (savedConnectionId != null) {
-            // Reutiliza o connectionId salvo
             connectionId = savedConnectionId
-            setupFirebaseListener(connectionId)
+            setupFirebaseListener(connectionId) // Configura o listener
         } else {
-            // Solicita o ID do paciente e cria ou reutiliza a conexão
             askForPatientIdAndSetupConnection(currentUserId, sharedPreferences)
         }
     }
@@ -155,20 +152,24 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
 
     private fun setupFirebaseListener(connectionId: String) {
+        // Referência ao nó de mensagens no Firebase
         val messageRef = FirebaseDatabase.getInstance().reference
             .child("conexoes")
             .child(connectionId)
             .child("messages")
 
+        // Limpa a lista de mensagens antes de configurar o listener
         messageList.clear()
         adapter.notifyDataSetChanged()
 
+        // Listener para detectar novas mensagens
         messageRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val messageText = snapshot.child("text").getValue(String::class.java)
                 val sender = snapshot.child("sender").getValue(String::class.java)
                 val timestamp = snapshot.child("timestamp").getValue(Long::class.java) ?: 0L
 
+                // Verifica se os dados são válidos antes de adicioná-los à lista
                 if (messageText != null && sender != null) {
                     val message = Message(messageText, sender, timestamp)
                     messageList.add(message)
@@ -177,11 +178,22 @@ class ChatCuidadorActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                // Você pode implementar lógica para editar mensagens se necessário
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                // Você pode implementar lógica para remover mensagens se necessário
+            }
+
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@ChatCuidadorActivity, "Erro ao carregar mensagens: ${error.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ChatCuidadorActivity,
+                    "Erro ao carregar mensagens: ${error.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
