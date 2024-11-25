@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.teladecadastro"
-    compileSdk = 34
+    compileSdk = 35
 
     buildFeatures {
         buildConfig = true
@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId = "com.example.teladecadastro"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -52,9 +52,9 @@ android {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
-    implementation("androidx.core:core-ktx:1.13.1")
+    //implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
+    //implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
@@ -64,6 +64,10 @@ dependencies {
     implementation("com.google.ai.client.generativeai:generativeai:0.8.0")
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.0")
 
+    implementation("androidx.core:core-ktx:1.15.0")
+    //implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.activity:activity-ktx:1.8.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
