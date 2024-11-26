@@ -60,6 +60,16 @@ class ChatCuidadorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_cuidador)
 
+        // Inicializa a interface do usuário
+        messageList = mutableListOf()
+        adapter = MessageAdapter(messageList)
+        initializeUIComponents()
+
+        val sharedPreferences = getSharedPreferences("chat_preferences", Context.MODE_PRIVATE)
+
+        // Resetar estado do chat
+        resetChatState(sharedPreferences)
+
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserId == null) {
             Toast.makeText(this, "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
@@ -67,10 +77,28 @@ class ChatCuidadorActivity : AppCompatActivity() {
             return
         }
 
-        // Inicializa a interface do RecyclerView
+        // Verificar se já existe uma conexão associada ao usuário atual
+        checkExistingConnection(currentUserId) { connectionId ->
+            if (connectionId != null) {
+                this.connectionId = connectionId
+                saveConnectionId(sharedPreferences, connectionId)
+                setupFirebaseListener(connectionId)
+            } else {
+                // Solicitar o ID do paciente para criar uma nova conexão
+                askForPatientIdAndSetupConnection(currentUserId, sharedPreferences)
+            }
+        }
+    }
+
+
+    private fun saveConnectionId(sharedPreferences: SharedPreferences, connectionId: String) {
+        sharedPreferences.edit().putString("CONNECTION_ID", connectionId).apply()
+    }
+
+
+
+    private fun initializeUIComponents() {
         recyclerView = findViewById(R.id.messageRecyclerView)
-        messageList = mutableListOf()
-        adapter = MessageAdapter(messageList)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -85,26 +113,13 @@ class ChatCuidadorActivity : AppCompatActivity() {
         menuIcon.setOnClickListener { showPopupMenu(it) }
         recordButton.setOnClickListener { toggleRecording() }
 
-        // Verifica permissões necessárias
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-        }
-
-        // Configuração do SharedPreferences
-        val sharedPreferences = getSharedPreferences("chat_preferences", Context.MODE_PRIVATE)
-        val savedConnectionId = sharedPreferences.getString("CONNECTION_ID", null)
-
-        if (savedConnectionId != null) {
-            connectionId = savedConnectionId
-            setupFirebaseListener(connectionId) // Configura o listener
-        } else {
-            askForPatientIdAndSetupConnection(currentUserId, sharedPreferences)
         }
     }
 
 
     private fun createOrGetConnection(cuidadorId: String, patientId: String, callback: (String?) -> Unit) {
-        // Gera um identificador único para a conexão
         val connectionKey = "${cuidadorId}-${patientId}"
         val connectionRef = FirebaseDatabase.getInstance().reference.child("conexoes").child(connectionKey)
 
@@ -119,8 +134,7 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
                     connectionRef.setValue(connectionData)
                         .addOnSuccessListener {
-                            connectionId = connectionKey // Salva o connectionId globalmente
-                            callback(connectionKey) // Retorna o connectionId via callback
+                            callback(connectionKey)
                         }
                         .addOnFailureListener { error ->
                             Toast.makeText(
@@ -131,16 +145,14 @@ class ChatCuidadorActivity : AppCompatActivity() {
                             callback(null)
                         }
                 } else {
-                    // Se a conexão já existir, apenas reutiliza o connectionId
-                    connectionId = connectionKey
-                    callback(connectionKey)
+                    callback(connectionKey) // Conexão já existente
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
                     this@ChatCuidadorActivity,
-                    "Erro ao acessar conexão: ${error.message}",
+                    "Erro ao verificar conexão: ${error.message}",
                     Toast.LENGTH_SHORT
                 ).show()
                 callback(null)
@@ -151,52 +163,104 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
 
 
+    private fun checkExistingConnection(userId: String, callback: (String?) -> Unit) {
+        val connectionRef = FirebaseDatabase.getInstance().reference.child("conexoes")
+        connectionRef.orderByChild("cuidadorID").equalTo(userId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (connection in snapshot.children) {
+                        callback(connection.key) // Retorna o ID da conexão encontrada
+                        return
+                    }
+
+                    // Se nenhuma conexão for encontrada como cuidador, verificar como paciente
+                    connectionRef.orderByChild("pacienteID").equalTo(userId)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for (connection in snapshot.children) {
+                                    callback(connection.key) // Retorna o ID da conexão encontrada
+                                    return
+                                }
+                                callback(null) // Nenhuma conexão encontrada
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText(
+                                    this@ChatCuidadorActivity,
+                                    "Erro ao verificar conexões: ${error.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                callback(null)
+                            }
+                        })
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@ChatCuidadorActivity,
+                        "Erro ao verificar conexões: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    callback(null)
+                }
+            })
+    }
+
+    private fun checkPatientConnection(currentUserId: String, sharedPreferences: SharedPreferences) {
+        val connectionRef = FirebaseDatabase.getInstance().reference.child("conexoes")
+
+        connectionRef.orderByChild("pacienteID").equalTo(currentUserId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (child in snapshot.children) {
+                            connectionId = child.key ?: ""
+                            sharedPreferences.edit().putString("CONNECTION_ID", connectionId).apply()
+                            setupFirebaseListener(connectionId)
+                            return
+                        }
+                    } else {
+                        askForPatientIdAndSetupConnection(currentUserId, sharedPreferences)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@ChatCuidadorActivity, "Erro ao verificar conexões: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
     private fun setupFirebaseListener(connectionId: String) {
-        // Referência ao nó de mensagens no Firebase
         val messageRef = FirebaseDatabase.getInstance().reference
             .child("conexoes")
             .child(connectionId)
             .child("messages")
 
-        // Limpa a lista de mensagens antes de configurar o listener
-        messageList.clear()
-        adapter.notifyDataSetChanged()
-
-        // Listener para detectar novas mensagens
+        // Listener para novas mensagens
         messageRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val messageText = snapshot.child("text").getValue(String::class.java)
                 val sender = snapshot.child("sender").getValue(String::class.java)
                 val timestamp = snapshot.child("timestamp").getValue(Long::class.java) ?: 0L
 
-                // Verifica se os dados são válidos antes de adicioná-los à lista
-                if (messageText != null && sender != null) {
-                    val message = Message(messageText, sender, timestamp)
-                    messageList.add(message)
+                if (!messageText.isNullOrEmpty() && !sender.isNullOrEmpty()) {
+                    val newMessage = Message(messageText, sender, timestamp)
+                    messageList.add(newMessage)
                     adapter.notifyItemInserted(messageList.size - 1)
-                    recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+                    recyclerView.smoothScrollToPosition(messageList.size - 1)
                 }
             }
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                // Você pode implementar lógica para editar mensagens se necessário
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                // Você pode implementar lógica para remover mensagens se necessário
-            }
-
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(
-                    this@ChatCuidadorActivity,
-                    "Erro ao carregar mensagens: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@ChatCuidadorActivity, "Erro ao carregar mensagens: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
+
 
 
 
@@ -218,13 +282,9 @@ class ChatCuidadorActivity : AppCompatActivity() {
                 return@setPositiveButton
             }
 
-            // Cria ou obtém a conexão no Firebase
             createOrGetConnection(cuidadorId, patientId) { connectionId ->
                 if (connectionId != null) {
-                    // Salva o connectionId em SharedPreferences
                     sharedPreferences.edit().putString("CONNECTION_ID", connectionId).apply()
-
-                    // Configura o listener de mensagens
                     setupFirebaseListener(connectionId)
                 } else {
                     Toast.makeText(this, "Erro ao configurar a conexão.", Toast.LENGTH_SHORT).show()
@@ -239,6 +299,7 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
         dialogBuilder.show()
     }
+
 
     private fun createConnection(patientId: String): String {
         val connectionRef = FirebaseDatabase.getInstance().reference.child("conexoes")
@@ -281,6 +342,14 @@ class ChatCuidadorActivity : AppCompatActivity() {
             }
         }
     }
+    private fun resetChatState(sharedPreferences: SharedPreferences) {
+        sharedPreferences.edit().remove("CONNECTION_ID").apply()
+        if (::messageList.isInitialized) {
+            messageList.clear()
+            adapter.notifyDataSetChanged()
+        }
+    }
+
 
     private fun stopRecording() {
         try {
@@ -343,7 +412,6 @@ class ChatCuidadorActivity : AppCompatActivity() {
 
         popupMenu.show()
     }
-
     private fun showClearConfirmationDialog() {
         AlertDialog.Builder(this)
             .setTitle("Confirmar")
